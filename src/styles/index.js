@@ -656,7 +656,30 @@ const LoaderIcon = styled.div`
   }
 `;
 
+const InputFieldContainer = styled.div`
+  position: relative;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const VisibleButton = styled.button`
+  position: absolute;
+  align-self: end;
+  height: 50px;
+  width: 50px;
+  right: 0;
+  background-color: transparent;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  padding: 1em 2em;
+  outline: none;
+  cursor: pointer;
+`;
+
 export {
+  VisibleButton,
+  InputFieldContainer,
   AppContainer,
   Body,
   Container,

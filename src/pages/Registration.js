@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mutation } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import TextField from '../components/inputs/TextField';
+import PasswordField from '../components/inputs/PasswordField';
 import Loader from '../components/Loader';
 import { invalidInputRegistration } from '../lib/utils';
 import REGISTER_MUTATION from '../graphql/mutation/register';
@@ -79,12 +80,11 @@ function Registration(props) {
                   placeholder="Ex: joe@gmail.com"
                   onChange={e => setEmail(e.target.value)}
                 />
-                <TextField
+                <PasswordField
                   label="Password*"
                   name="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  type="password"
                 />
                 <S.FormButton
                   disabled={invalidInputRegistration([
