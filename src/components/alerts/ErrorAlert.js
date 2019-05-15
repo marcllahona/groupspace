@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import * as S from '../../styles';
+import { displayErrorMessage } from '../../lib/messages';
 
-function ErrorAlert(props) {
-  const { text } = props;
-  const [isOpen, openAlert] = useState(true);
+function ErrorAlert({ text, error, hide }) {
   return (
     <div>
-      <>
-        {isOpen && (
-          <S.Modal>
-            <S.Menu>
-              <p>{text}</p>
-            </S.Menu>
-            <S.Overlay onClick={() => openAlert(false)} />
-          </S.Modal>
-        )}
-      </>
+      <p>{displayErrorMessage(error.message) || text}</p>
+      <button onClick={hide}>Ok</button>
     </div>
   );
 }

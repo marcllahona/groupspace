@@ -1,34 +1,40 @@
 import Home from '../pages/Home';
-import Meeting from '../pages/Meeting';
 import Login from '../pages/Login';
 import Registration from '../pages/Registration';
+import Add from "../pages/Add";
+import Explore from "../pages/Explore";
 
 const routes = [
   {
-    path: '/',
-    component: Home,
-    exact: true
-  },
-  {
-    path: '/home',
-    component: Home,
-    exact: true
-  },
-  {
     path: '/login',
     component: Login,
-    exact: true
+    exact: true,
+    private: false
   },
   {
     path: '/registration',
     component: Registration,
-    exact: true
+    exact: true,
+    private: false
   },
   {
-    path: '/meeting/:name?',
-    component: Meeting,
-    exact: true
-  }
+    path: '/explore',
+    component: Explore,
+    exact: true,
+    private: true
+  },
+  {
+    path: '/add',
+    component: Add,
+    exact: true,
+    private: true
+  },
+  {
+    path: '/home/:group?/:channel?',
+    component: Home,
+    exact: true,
+    private: true
+  },
 ];
 
 export default routes;

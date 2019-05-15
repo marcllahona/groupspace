@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import * as S from '../../styles';
-import VisibilityIcon from '../icons/VisibilityIcon';
 
 function PasswordField(props) {
   const { label, name, placeholder, value, onChange } = props;
-  const [isVisible, toggleVisibility] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   return (
     <S.InputBody>
@@ -20,11 +19,8 @@ function PasswordField(props) {
           onChange={onChange}
           name={name}
         />
-        <S.VisibleButton
-          type="button"
-          onClick={() => toggleVisibility(!isVisible)}
-        >
-          <VisibilityIcon isVisible={isVisible} />
+        <S.VisibleButton type="button" onClick={() => setIsVisible(!isVisible)}>
+          {isVisible ? 'HIDE' : 'SHOW'}
         </S.VisibleButton>
       </S.InputFieldContainer>
     </S.InputBody>

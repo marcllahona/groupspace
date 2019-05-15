@@ -1,22 +1,22 @@
 import React from 'react';
 import { hydrate, render } from 'react-dom';
-import { ThemeProvider } from 'styled-components';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import Apollo from './Apollo';
 import theme from './lib/theme';
-import './styles/index.css';
+import { ThemeProvider } from 'styled-components';
+import {RouterProvider} from "./components/RouterProvider";
+import './styles/normalize.css';
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById('app-root');
 const renderOrHydrate = rootElement.hasChildNodes() ? hydrate : render;
 
 renderOrHydrate(
-  <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      <Apollo>
-        <App />
-      </Apollo>
-    </BrowserRouter>
-  </ThemeProvider>,
+        <ThemeProvider theme={theme}>
+            <RouterProvider>
+                <Apollo>
+                    <App />
+                </Apollo>
+            </RouterProvider>
+        </ThemeProvider>,
   rootElement
 );

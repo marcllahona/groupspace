@@ -17,6 +17,7 @@ import Loader from './components/Loader';
 function Apollo({ children }) {
   const [client, setClient] = useState(null);
   const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
     const authToken = auth.getToken();
     const uploadLink = new createUploadLink({
@@ -86,7 +87,6 @@ function Apollo({ children }) {
 
     const cache = new InMemoryCache();
     const retryLink = new RetryLink();
-
     const link = ApolloLink.from([errorLink, retryLink, serverLink]);
 
     const client = new ApolloClient({

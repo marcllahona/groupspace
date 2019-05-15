@@ -1,347 +1,133 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { Button, FormButton, CircularButton } from "./Buttons";
+import { InputBody, InputField, InputLabel} from "./Inputs";
 
-const AppContainer = styled.div`
+const Header = styled.header`
+  display: grid;
+  background-color: white;
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100%;
+  align-items: center;
+  z-index: 1;
+  border-bottom: 1px solid ${props => props.theme.palette.border}
+`;
+
+const Navigation = styled.nav`
   display: flex;
-  flex-wrap: wrap;
-  min-height: 100vh;
-  margin: 0px auto;
+  width: 100%;
+  height: 100%;
+  flex: 1 auto;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-/**
- * Button used with Actions.
- */
-const Button = styled.button`
-  letter-spacing: 1px;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: ${props =>
-    props.inverted
-      ? props.theme.palette.inverted
-      : props.theme.palette.primary};
-  color: ${props =>
-    props.inverted
-      ? props.theme.palette.primary
-      : props.theme.palette.inverted};
-  border-radius: ${props => props.border_radius}px;
-  border: none;
-  padding: 0.5em 1em 0.5em 1em;
-  cursor: pointer;
-  height: ${props =>
-    typeof props.height === 'number' ? `${props.height}px` : props.height};
-  width: ${props =>
-    typeof props.width === 'number' ? `${props.width}px` : props.width};
-  transition: all 0.2s ease 0s;
+const NavigationGroup = styled.div`
+  display: flex;
+  width: 100%;
+  padding-left: 100px;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`;
 
-  :hover {
-    opacity: 0.75;
+const NavigationLink = styled(NavLink)`
+  position: relative;
+  color: ${props => props.theme.palette.secondary};
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5em 1em;
+  margin: 0 1em;
+  text-decoration: none;
+
+  webkit-transition: all 0.15s ease-out;
+  -moz-transition: all 0.15s ease-out;
+  -o-transition: all 0.15s ease-out;
+  -ms-transition: all 0.15s ease-out;
+  transition: all 0.15s ease-out;
+
+  &:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    bottom: 0;
+    left: 0;
+    background: ${props => props.theme.palette.primary};
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: 0.25s linear;
+  }
+  &:hover:before,
+  &:focus:before {
+    visibility: visible;
+    transform: scaleX(1);
+  }
+  
+    &.active{
+      color: ${props => props.theme.palette.primary};
   }
 `;
 
-Button.displayName = 'Button';
 
-Button.propTypes = {
-  inverted: PropTypes.bool,
-  border_radius: PropTypes.number,
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-};
-
-Button.defaultProps = {
-  inverted: false,
-  border_radius: 6,
-  height: 50,
-  width: 'auto'
-};
-
-/**
- * Button used with Forms.
- */
-const FormButton = styled.button`
-  letter-spacing: 1px;
-  font-weight: 600;
-  font-size: 14px;
-  background-color: ${props => props.theme.palette.primary};
-  color: ${props => props.theme.palette.inverted};
-  border-radius: ${props => props.border_radius}px;
-  border: none;
-  padding: 0.5em 1em 0.5em 1em;
-  cursor: pointer;
-  height: ${props =>
-    typeof props.height === 'number' ? `${props.height}px` : props.height};
-  width: ${props =>
-    typeof props.width === 'number' ? `${props.width}px` : props.width};
-  min-width: ${props => props.min_width}px;
-  transition: all 0.2s ease 0s;
-  opacity: ${props => (props.disabled ? 0.5 : 1.0)};
-
-  :hover {
-    opacity: 0.5;
-  }
-`;
-
-FormButton.displayName = 'FormButton';
-
-FormButton.propTypes = {
-  disabled: PropTypes.bool,
-  border_radius: PropTypes.number,
-  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  min_width: PropTypes.number
-};
-
-FormButton.defaultProps = {
-  disabled: false,
-  border_radius: 6,
-  height: 50,
-  min_width: 200
-};
-
-/**
- * Circular Button used with Actions.
- */
-const CircularButton = styled.button`
-  background-color: ${props => props.theme.palette[props.color]};
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  height: ${props => props.size}px;
-  width: ${props => props.size}px;
+const App = styled.div`
   display: flex;
   flex-direction: column;
-  -webkit-box-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  align-items: center;
-  position: relative;
-  margin: 15px;
-  padding: 5px;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-property: transform;
-  transition-property: transform;
-
-  :hover,
-  :focus,
-  :active {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
+  flex-wrap: wrap;
+  flex: 1 auto;
+  height: 100vh;
+  max-width: 1920px;
 `;
 
-CircularButton.displayName = 'CircularButton';
-
-CircularButton.propTypes = {
-  color: PropTypes.oneOf(['primary', 'secondary', 'inverted']),
-  size: PropTypes.number
-};
-
-CircularButton.defaultProps = {
-  size: 50
-};
-
-const InputField = styled.input`
-  font-size: 14px;
-  letter-spacing: 1px;
-  background-color: ${props => props.theme.palette.backgroundForm};
-  color: ${props => props.theme.palette.secondary};
-  border-radius: 6px;
-  border: 1px solid ${props => props.theme.palette.backgroundForm};
-  margin: 0;
-  width: 100%;
-  height: 50px;
-  padding: 0.5em 1em 0.5em 1em;
-  line-height: 20px;
-  outline: none !important;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box; /* Firefox, other Gecko */
-  box-sizing: border-box;
-  cursor: text;
-
-  ::-webkit-input-placeholder {
-    /* Chrome/Opera/Safari */
-    color: ${props => props.theme.palette.textForm};
-  }
-  ::-moz-placeholder {
-    /* Firefox 19+ */
-    color: ${props => props.theme.palette.textForm};
-  }
-  :-ms-input-placeholder {
-    /* IE 10+ */
-    color: ${props => props.theme.palette.textForm};
-  }
-  :-moz-placeholder {
-    /* Firefox 18- */
-    color: ${props => props.theme.palette.textForm};
-  }
-
-  &[type='number']::-webkit-outer-spin-button,
-  &[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  &[type='number'] {
-    -moz-appearance: textfield;
-  }
-
-  :focus {
-    border: 1px solid ${props => props.theme.palette.primary};
-  }
-`;
-
-InputField.displayName = 'InputField';
-
-InputField.propTypes = {
-  primary: PropTypes.bool
-};
-
-InputField.defaultProps = {
-  primary: false
-};
-
-const InputLabel = styled.label`
-  font-size: 14px;
-  line-height: 35px;
-  font-weight: bold;
-  letter-spacing: 1.25px;
-  color: ${props => props.theme.palette.textForm};
-  padding: 1em 0 1em 0;
-`;
-
-InputLabel.displayName = 'InputLabel';
-
-const InputBody = styled.div`
-  position: relative;
-  text-align: start;
-  width: 100%;
-`;
-
-const ActionBar = styled.div`
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+const NavigationBar = styled.div`
   display: flex;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  height: 32px;
-  color: ${props => props.theme.palette.onSecondary};
-  padding: 2px;
-  background: ${props => props.theme.palette.secondary};
-  opacity: 0.62;
-  text-align: center;
   align-items: center;
-`;
-
-const ActionBarName = styled.p`
-  font-size: 14px;
+  justify-content: space-between;
+  background-color: white;
   width: 100%;
-  font-weight: 600;
-  text-align: center;
-  line-height: 10px;
-  letter-spacing: 0.5px;
-  color: ${props => props.theme.palette.onSecondary};
+  height: 75px;
+  position: fixed;
+  top: 0;
+  z-index: 2;
+  max-width: 1920px;
 `;
 
-const VoiceVisualizer = styled.div`
-  position: absolute;
+const ChannelView = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
-  top: 0px;
-  z-index: -1;
-  background: ${props => props.theme.palette.secondary};
-  opacity: 0.3;
-  border-radius: 2px;
-  transition: all 0.3s cubic-bezier(0.06, 1.13, 1, 1) 0s;
-  transform: scale(1, 1.1, 1.05, 1.02, 1.08, 1);
 `;
 
-const ParticipantsContainer = styled.div`
-  width: 100%;
-  z-index: 1;
-  height: 100%;
-  padding: 15px;
-  transition: all 0.35s ease 0s;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  padding: 1em;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ParticipantsList = styled.div`
+const AddContainer = styled(Container)`
+  max-width: 800px;
+`;
+
+
+const Group = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  -webkit-box-align: center;
   align-items: center;
-  margin-top: 80px;
-  height: calc(100vh - 290px);
-  max-height: calc(100vh - 290px);
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const ParticipantAnimation = styled.div`
-  width: 100%;
-  max-width: 640px;
-  height: 100%;
-  max-height: 400px;
-  margin: 1%;
-  transform: rotate3d(1, 1, 1, 0deg) scale(1);
-  opacity: 1;
-`;
-
-const ParticipantAnimationMini = styled.div`
-  position: fixed;
-  max-width: 400px;
-  max-height: 400px;
-  top: 20px;
-  left: 20px;
-  height: 120px;
-  width: 120px;
-  z-index: 1;
-  margin: 0px;
-  transform: rotate3d(1, 1, 1, 0deg) scale(1);
-  opacity: 1;
-`;
-
-const ParticipantContainer = styled.div`
-  position: relative;
-  height: 100%;
-  width: 100%;
-  max-height: inherit;
-  margin: 0px auto;
-`;
-
-const ParticipantMedia = styled.div`
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 20px, rgba(0, 0, 0, 0.1) 0px 3px 6px;
-  width: 100%;
-  height: 100%;
-  max-height: inherit;
-  border-radius: 2px;
-  transition: border 0.1s ease 0s;
-  background: transparent;
-  video {
-    transform: scaleX(-1);
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-`;
-
-const ParticipantMediaDisabled = styled.div`
-  width: 100%;
-  height: 100%;
-  max-height: inherit;
-  border-radius: 2px;
-  background: linear-gradient(-45deg, rgb(95, 202, 228), rgb(175, 229, 242));
-  overflow: hidden;
+  justify-content: flex-end;
 `;
 
 const ActionsBar = styled.div`
@@ -351,53 +137,36 @@ const ActionsBar = styled.div`
   width: 100%;
   height: 100px;
   position: fixed;
-  bottom: 0px;
+  bottom: 0;
   z-index: 1;
 `;
 
-const NavigationBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  height: 75px;
-  position: fixed;
-  top: 0px;
-  z-index: 2;
-`;
-
 const ChatContainer = styled.div`
+  padding: 1em 0;
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  top: calc(70px + 15px);
-  right: calc(15px);
-  width: 350px;
-  height: calc(100vh - 140px - 30px);
+  width: 100%;
   background-color: ${props => props.theme.palette.onPrimary};
-  z-index: 2;
-  border-radius: 3px;
-  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-    0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const ChatHeader = styled.div`
   position: relative;
-  top: 0px;
-  right: 0px;
+  top: 0;
+  right: 0;
   display: flex;
   justify-content: flex-end;
   width: 100%;
   cursor: pointer;
   background: transparent;
+  min-height: 60px;
 `;
 const ChatBody = styled.div`
   display: flex;
   flex: 1 1 auto;
-  border-radius: 5px;
   background: ${props => props.theme.palette.onPrimary};
+  width: 100%;
+  padding: 1em 0;
 `;
 
 const ChatMessageList = styled.div`
@@ -415,38 +184,47 @@ const ChatMessageList = styled.div`
 const ChatFooter = styled.div`
   display: grid;
   grid-template-columns: 1fr auto;
-  background-color: ${props => props.theme.palette.backgroundForm};
+  background-color: ${props => props.theme.palette.onPrimary};
   align-items: center;
-  z-index: 2;
+  width: 100%;
+  border-top: 1px solid ${props => props.theme.palette.border};
 `;
 
 const ChatMessageContainer = styled.div`
-  align-self: ${props => (props.isUser ? 'flex-end' : 'flex-start')};
   display: flex;
   flex-direction: column;
-  max-width: 80%;
-  min-height: min-content;
-  margin-bottom: 20px;
+  padding-bottom: 1em;
+  width: 100%;
 `;
 
 ChatMessageContainer.propTypes = {
   isUser: PropTypes.bool
 };
 
-const ChatMessage = styled.div`
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+const ChatMessageBody = styled.div`
+  display: flex;
+  flex-direction: row;
   align-self: flex-start;
+  word-break: break-word;
+  background: ${props => props.theme.palette.lightSecondary};
+  padding: 1em;
+  border-radius: 3px;
+  width: 100%;
+`;
+
+const ChatMessage = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: min-content;
-  word-break: break-word;
-  background: ${props => props.theme.palette.primary};
-  padding: 5px 10px;
-  border-radius: 3px;
+  padding-left: 1em;
+`;
+
+const ChatMessageHead = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 const ChatMessageName = styled.p`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   display: flex;
   -webkit-box-align: center;
@@ -454,7 +232,20 @@ const ChatMessageName = styled.p`
   -webkit-box-pack: start;
   justify-content: flex-start;
   padding-bottom: 5px;
+  padding-right: 0.5em;
   color: ${props => props.theme.palette.secondary};
+`;
+
+const ChatMessageSubText = styled.p`
+  font-size: 12px;
+  font-weight: normal;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: start;
+  justify-content: flex-start;
+  padding-bottom: 5px;
+  color: ${props => props.theme.palette.textForm};
 `;
 
 const ChatMessageText = styled.p`
@@ -467,7 +258,7 @@ const ChatMessageText = styled.p`
   -webkit-box-pack: start;
   justify-content: flex-start;
   text-align: start;
-  color: ${props => props.theme.palette.onPrimary};
+  color: ${props => props.theme.palette.secondary};
 `;
 
 const Modal = styled.div`
@@ -525,8 +316,8 @@ const Menu = styled.div`
 
 const MenuHeader = styled.div`
   position: relative;
-  top: 0px;
-  right: 0px;
+  top: 0;
+  right: 0;
   display: flex;
   justify-content: flex-end;
   width: 100%;
@@ -546,19 +337,81 @@ const MenuBody = styled.div`
 `;
 
 const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    align-content: center;
+    justify-content: center;
 `;
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-  padding: 1em;
-  align-items: center;
+const SideSection = styled.section`
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    background: ${props => props.color || props.theme.palette.onSecondary};
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    position: sticky;
+    white-space: nowrap;
+    min-width: ${props => props.width}px;
+    -webkit-transition: width 0.2s ease-in-out;
+    transition: width 0.2s ease-in-out;
+    overflow: hidden; 
+    height: 100vh;
+    z-index:2;
+    border-left: 1px solid ${props => props.theme.palette.primary}
+`;
+
+SideSection.propTypes = {
+  width: PropTypes.number.isRequired,
+};
+
+const SideSectionBody = styled.div`
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex: 50;
+    -ms-flex: 50;
+    flex: 50;
+    overflow: hidden;
+`;
+
+const SideSectionContainer = styled.div`
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    padding: 2em 0;
+`;
+
+const CentralSection = styled.section`
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    width: 100%;
+    height: 100%;
 `;
 
 const Title = styled.h1`
@@ -665,9 +518,9 @@ const InputFieldContainer = styled.div`
 
 const VisibleButton = styled.button`
   position: absolute;
+  font-weight: bold;
   align-self: end;
   height: 50px;
-  width: 50px;
   right: 0;
   background-color: transparent;
   border-radius: 0 6px 6px 0;
@@ -677,15 +530,155 @@ const VisibleButton = styled.button`
   cursor: pointer;
 `;
 
+const GroupRowImage = styled.img`
+
+`;
+
+const GroupRowLink = styled(NavLink)`
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+`;
+
+const GroupRowContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  background-color: ${props => props.theme.palette.onSecondary};
+  color: ${props => props.theme.palette.secondary};
+  padding: 1em;
+  text-decoration: none;
+  cursor: pointer;
+  align-items: center;
+  width: 100%;
+  
+  &:hover{
+    background-color: ${props => props.theme.palette.background};
+  }
+`;
+
+
+const GroupRowBody = styled.div`
+  padding: 0 1em;
+`;
+
+const ImageLetter = styled.div`
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  border-radius: ${props => props.round ? '50%' : '6px'};
+  background-color: ${props => props.theme.palette.primary};
+  color: ${props => props.theme.palette.onPrimary};
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  font-size: calc(${props => props.size}*0.35px);
+  font-weight: 600;
+  padding-top: calc(${props => props.size}*0.05px);
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 2px;
+`;
+
+ImageLetter.propTypes = {
+  size: PropTypes.number.isRequired,
+  round: PropTypes.bool,
+};
+
+ImageLetter.defaultProps = {
+  round: false
+};
+
+
+const ImagePicture = styled.img`
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+  border-radius: ${props => props.round ? `50%` : `6px`};
+  object-fit: cover;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 2px;
+  
+  &:hover{
+    border: 1px solid ${props => props.shouldHover ? props.theme.palette.primary : 'inherit'};
+  }
+`;
+
+ImagePicture.propTypes = {
+  size: PropTypes.number.isRequired,
+  shouldHover: PropTypes.bool,
+  round: PropTypes.bool,
+};
+
+ImagePicture.defaultProps = {
+  round: false
+};
+
+
+const GroupInfoBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  padding: 1em;
+
+`;
+
+
+const Card = styled.div`
+  border-radius: 6px;
+  border: 1px solid ${props => props.theme.palette.border};
+  display: flex;
+  flex-direction: column;
+  background-color: ${props => props.theme.palette.onSecondary};
+  height: 100%;
+  width: 100%;
+  margin-top: 24px;
+`;
+
+const CardHeader = styled.div`
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    border-bottom: 1px solid ${props => props.theme.palette.border};
+    padding: 16px;
+    background-color: ${props => props.theme.palette.onSecondary};
+    border-radius: 4px 4px 0 0;
+`;
+
+const CardList = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
+
 export {
+  AddContainer,
+  Card,
+  CardHeader,
+  CardList,
+  GroupInfoBody,
+  GroupRowContainer,
+  GroupRowBody,
+  GroupRowImage,
+  GroupRowLink,
+  ImageLetter,
+  ImagePicture,
+  App,
+  Header,
+  Navigation,
+  NavigationGroup,
+  NavigationLink,
+  Body,
+  SideSection,
+  SideSectionBody,
+  SideSectionContainer,
+  CentralSection,
+  ChannelView,
   VisibleButton,
   InputFieldContainer,
-  AppContainer,
-  Body,
   Container,
   Title,
   Instructions,
-  Action,
   CustomLink,
   Form,
   Button,
@@ -695,18 +688,6 @@ export {
   InputBody,
   InputField,
   InputLabel,
-  ActionBar,
-  ActionBarName,
-  VoiceVisualizer,
-  ParticipantsContainer,
-  ParticipantsList,
-  ParticipantAnimation,
-  ParticipantContainer,
-  ParticipantMedia,
-  ParticipantMediaDisabled,
-  ParticipantAnimationMini,
-  ActionsBar,
-  NavigationBar,
   ChatContainer,
   ChatHeader,
   ChatBody,
@@ -714,8 +695,11 @@ export {
   ChatMessageList,
   ChatMessageContainer,
   ChatMessage,
+  ChatMessageHead,
   ChatMessageName,
   ChatMessageText,
+  ChatMessageBody,
+  ChatMessageSubText,
   Overlay,
   Menu,
   Modal,

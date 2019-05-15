@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as S from '../../styles';
 
 function TextField(props) {
-  const { label, name, type, placeholder, value, onChange } = props;
+  const { label, name, type, placeholder, value, onChange, hideFocus } = props;
 
   return (
     <S.InputBody>
@@ -16,6 +16,7 @@ function TextField(props) {
         value={value}
         onChange={onChange}
         name={name}
+        hideFocus={hideFocus}
       />
     </S.InputBody>
   );
@@ -27,13 +28,15 @@ TextField.propTypes = {
   onChange: PropTypes.func.isRequired,
   label: PropTypes.string,
   type: PropTypes.string,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  hideFocus: PropTypes.bool,
 };
 
 TextField.defaultProps = {
   label: null,
   type: 'text',
-  placeholder: ''
+  placeholder: '',
+  hideFocus: false
 };
 
 export default TextField;

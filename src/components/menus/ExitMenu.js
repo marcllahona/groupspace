@@ -8,7 +8,6 @@ import * as S from '../../styles';
 
 function ExitMenu(props) {
   const { id, name, onCancel } = props;
-  console.log(id, name);
   return (
     <>
       <S.MenuHeader>
@@ -18,7 +17,7 @@ function ExitMenu(props) {
       <S.MenuBody>
         <p>Click the button if you really want to leave the meeting</p>
         <Mutation
-          mutation={LEAVE_MEETING_BY_NAME_MUTATION}
+          mutation={LEAVE_GROUP_BY_NAME_MUTATION}
           variables={{ userID: id, name }}
         >
           {(leaveMeetingByName, { data, loading, error }) => {
